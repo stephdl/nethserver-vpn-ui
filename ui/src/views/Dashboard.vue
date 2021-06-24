@@ -251,18 +251,6 @@ export default {
   mounted() {
     this.getStats();
   },
-  updated() {
-    var $ = window.jQuery;
-    $('[data-toggle="tooltip"]').tooltip();
-    if (!this.usersPerWanPieChart) {
-      this.usersPerWanPieChart = generatePieChart("#usersPerWanPieChart-pie-chart", {
-         columns: []
-       },{ width: 400, height: 200});
-    }
-    this.usersPerWanPieChart.load({
-      json: this.status.openvpn.roadwarrior.usersPerWanIP
-    });
-  },
   data() {
     return {
       view: {
@@ -436,7 +424,21 @@ export default {
             var name = success.openvpn.roadwarrior.interfaces[i];
             context.initCharts(name, "rw");
           }
-
+          //init piechart
+          var $ = window.jQuery;
+          $('[data-toggle="tooltip"]').tooltip();
+          if (!context.usersPerWanPieChart) {
+            context.usersPerWanPieChart = generatePieChart("#usersPerWanPieChart-pie-chart", {
+                columns: []
+              },
+              { 
+                width: 400, height: 200
+              });
+          }
+          context.usersPerWanPieChart.load({
+            json: context.status.openvpn.roadwarrior.usersPerWanIP
+          });
+          console.log(context.status.openvpn.roadwarrior.usersPerWanIP);
           context.view.isLoaded = true;
           context.$forceUpdate();
         },
